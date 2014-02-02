@@ -1,4 +1,6 @@
 /bin
+build
+dist
 liblwjgl.dylib
 openal.dylib
 .DS_Store
