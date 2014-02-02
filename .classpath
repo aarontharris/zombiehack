@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="assets"/>
+	<classpathentry kind="lib" path="dist/lib/eventbus.jar"/>
+	<classpathentry kind="lib" path="dist/lib/j-ogg-oggd.jar"/>
+	<classpathentry kind="lib" path="dist/lib/j-ogg-vorbisd.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jbullet.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jinput.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-core.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-desktop.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-effects.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-jbullet.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-jogg.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-lwjgl-natives.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-lwjgl.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-networking.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-niftygui.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-plugins.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jME3-terrain.jar"/>
+	<classpathentry kind="lib" path="dist/lib/lwjgl.jar"/>
+	<classpathentry kind="lib" path="dist/lib/nifty-default-controls.jar"/>
+	<classpathentry kind="lib" path="dist/lib/nifty-style-black.jar"/>
+	<classpathentry kind="lib" path="dist/lib/nifty.jar"/>
+	<classpathentry kind="lib" path="dist/lib/stack-alloc.jar"/>
+	<classpathentry kind="lib" path="dist/lib/vecmath.jar"/>
+	<classpathentry kind="lib" path="dist/lib/xmlpull-xpp3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="dist/lib/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="dist/lib/PNGDecoder.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
