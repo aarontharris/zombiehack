@@ -8,3 +8,4 @@ openal.dylib
 */.DS_Store
 */*/.DS_Store
 */*/*/.DS_Store
+/dist/
