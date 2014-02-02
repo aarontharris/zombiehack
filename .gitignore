@@ -1,11 +1,7 @@
 /bin
-/nbproject/private/
-/build/
-/nbbuild/
 liblwjgl.dylib
 openal.dylib
 .DS_Store
 */.DS_Store
 */*/.DS_Store
 */*/*/.DS_Store
-/dist/
