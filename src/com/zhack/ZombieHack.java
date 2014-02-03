@@ -5,8 +5,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.font.BitmapFont;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
-import com.zhack.appstate.CommonAppState;
-import com.zhack.appstate.GamePlayAppState;
 import com.zhack.appstate.test.GenBlocksTestState;
 import com.zhack.services.MaterialService;
 import com.zhack.services.MeshService;
@@ -66,9 +64,9 @@ public class ZombieHack extends SimpleApplication {
 
 		MeshService.getInstance().init();
 		MaterialService.getInstance().init(assetManager);
-		
-		initViewport( 100f, 100f );
-		
+
+		initViewport(100f, 100f);
+
 		// appState = new GamePlayAppState();
 		appState = new GenBlocksTestState();
 		getStateManager().attach(appState);
@@ -86,18 +84,18 @@ public class ZombieHack extends SimpleApplication {
 	// FIXME: instead, each object related to an appstate should get a weakref to its appstate
 	// then when that object calls its own getAppState() and that method learns that the weakref is empty
 	// it can redirect to a kill self.
-	public CommonAppState getAppState() {
-		return getStateManager().getState(GamePlayAppState.class);
-	}
-	
+	// public CommonAppState getAppState() {
+	// return getStateManager().getState(GamePlayAppState.class);
+	// }
+
 	public BitmapFont getDefaultFont() {
 		return guiFont;
 	}
-	
+
 	public int getScreenWidth() {
 		return settings.getWidth();
 	}
-	
+
 	public int getScreenHeight() {
 		return settings.getHeight();
 	}

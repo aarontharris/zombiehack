@@ -39,8 +39,17 @@ public class Chunk extends BaseObject {
 		chunkState = new short[CHUNK_DIAMETER][CHUNK_DIAMETER][CHUNK_DIAMETER][NUM_DATA];
 	}
 
+	public long toChunkSeed(long seed) {
+		final long prime = 31;
+		long result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		result = prime * result + z;
+		return result + seed;
+	}
+
 	public void generate(long seed) {
-		Random rand = new Random(seed);
+		Random rand = new Random(toChunkSeed(seed));
 
 		for (short x = 0; x < CHUNK_DIAMETER; x++) {
 			for (short y = 0; y < CHUNK_DIAMETER; y++) {
@@ -48,7 +57,7 @@ public class Chunk extends BaseObject {
 					int r = rand.nextInt(1000);
 					if (r < 1) { // 1 in 1000
 						setBlockType(x, y, z, BlockType.AIR);
-					} else if (r < 301) { // 1 in 10
+					} else if (r < 301) {
 						setBlockType(x, y, z, BlockType.STONE);
 					} else {
 						setBlockType(x, y, z, BlockType.DIRT);
@@ -57,6 +66,7 @@ public class Chunk extends BaseObject {
 			}
 		}
 
+		setBlockType(0, 0, 0, BlockType.WHITE); // note our 0,0,0 point
 	}
 
 	public void setBlockType(int x, int y, int z, BlockType type) {
@@ -65,7 +75,6 @@ public class Chunk extends BaseObject {
 
 	public BlockType getBlockType(int x, int y, int z) {
 		BlockType out = BlockType.getById(chunkState[x][y][z][ID_BLOCKSTATE_TYPE]);
-		// log().debug("[%d][%d][%d] = %s", x, y, z, out);
 		return out;
 	}
 
@@ -91,5 +100,29 @@ public class Chunk extends BaseObject {
 
 	public int getZ() {
 		return z;
+	}
+	
+	public int getLeftBoundary() {
+		return getX() - CHUNK_DIAMETER;
+	}
+
+	public int getRightBoundary() {
+		return getX() + CHUNK_DIAMETER;
+	}
+
+	public int getFrontBoundary() {
+		return getZ() + CHUNK_DIAMETER;
+	}
+
+	public int getBackBoundary() {
+		return getZ() - CHUNK_DIAMETER;
+	}
+
+	public int getTopBoundary() {
+		return getY() + CHUNK_DIAMETER;
+	}
+
+	public int getBottomBoundary() {
+		return getY() - CHUNK_DIAMETER;
 	}
 }
