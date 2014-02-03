@@ -14,6 +14,7 @@ public class MaterialService {
 	private static final String MAT_UNSHADED = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String TEX_STONE = "Textures/stone.png";
 	private static final String TEX_DIRT = "Textures/tex_dirt01.png";
+        private static final String TEX_COBBLESTONE = "Textures/cobblestone.png";
 	private static final String TEX_CURSORBOX = "Textures/cursorbox.png";
 	private static final String TEX_CROSSHAIR = "Textures/crosshair.png";
 
@@ -23,6 +24,7 @@ public class MaterialService {
 		CROSSHAIR(true, MAT_UNSHADED, TEX_CROSSHAIR), //
 		STONE(false, MAT_UNSHADED, TEX_STONE), //
 		DIRT(false, MAT_UNSHADED, TEX_DIRT), //
+                COBBLESTONE(false, MAT_UNSHADED, TEX_COBBLESTONE), //
 		;
 
 		private String matDefFile;
