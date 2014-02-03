@@ -1,14 +1,6 @@
 package com.zhack.gameobject;
 
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.shape.Box;
-import com.jme3.texture.Texture.WrapMode;
-import com.zhack.ZombieHack;
-import com.zhack.event.EventMgr;
 
 public class Player extends Geometry {
 
