@@ -17,6 +17,7 @@ public enum BlockType {
 	DIRT((short) 3, true, MaterialType.DIRT), //
 	STONE((short) 4, true, MaterialType.STONE), //
 	WHITE((short) 5, true, MaterialType.WHITE), //
+	COBBLESTONE((short) 6, true, MaterialType.COBBLESTONE), //
 	;
 
 	private static BlockType[] typeMap;

@@ -31,7 +31,7 @@ public class CursorBox extends BaseObject {
 		this(null);
 	}
 
-	public CursorBox( Node parent ) {
+	public CursorBox(Node parent) {
 		MaterialService matSvc = MaterialService.getInstance();
 		MeshService meshSvc = MeshService.getInstance();
 
@@ -46,7 +46,7 @@ public class CursorBox extends BaseObject {
 		geo.setMaterial(mat);
 		geo.setLocalTranslation(0, 0, 0);
 		geo.setQueueBucket(Bucket.Transparent);
-		
+
 		attachToParent(parent);
 	}
 
@@ -120,5 +120,9 @@ public class CursorBox extends BaseObject {
 		} else {
 			setInvisible();
 		}
+	}
+
+	public Geometry getGeometry() {
+		return geo;
 	}
 }

@@ -59,6 +59,8 @@ public class Chunk extends BaseObject {
 						setBlockType(x, y, z, BlockType.AIR);
 					} else if (r < 301) {
 						setBlockType(x, y, z, BlockType.STONE);
+					} else if (r < 601) {
+						setBlockType(x, y, z, BlockType.COBBLESTONE);
 					} else {
 						setBlockType(x, y, z, BlockType.DIRT);
 					}

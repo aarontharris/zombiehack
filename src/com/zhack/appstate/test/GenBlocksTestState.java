@@ -27,6 +27,7 @@ import com.zhack.services.MeshService.MeshType;
 import com.zhack.ui.CursorBox;
 import com.zhack.ui.UI;
 import com.zhack.util.DoEvery;
+import com.zhack.util.Utl;
 
 public class GenBlocksTestState extends BaseTestAppState {
 
@@ -63,10 +64,9 @@ public class GenBlocksTestState extends BaseTestAppState {
 				camRayCollisionResults.clear(); // clear before use
 				rootNode.collideWith(camRay, camRayCollisionResults);
 
-				if (camRayCollisionResults.size() > 0) {
-					CollisionResult collision = camRayCollisionResults.getClosestCollision();
+				CollisionResult collision = Utl.getFirstCollision(camRayCollisionResults, cursorBox.getGeometry());
+				if (collision != null) {
 					Geometry target = collision.getGeometry();
-
 					target.removeFromParent();
 				}
 			}
