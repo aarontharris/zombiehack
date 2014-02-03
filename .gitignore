@@ -7,3 +7,5 @@ openal.dylib
 */.DS_Store
 */*/.DS_Store
 */*/*/.DS_Store
+
+nbproject/private/private.properties
