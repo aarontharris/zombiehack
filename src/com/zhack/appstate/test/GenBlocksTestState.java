@@ -19,6 +19,7 @@ import com.jme3.scene.Node;
 import com.zhack.appstate.BaseTestAppState;
 import com.zhack.datas.BlockType;
 import com.zhack.datas.Chunk;
+import com.zhack.datas.Sector;
 import com.zhack.datas.World;
 import com.zhack.gameobject.Player;
 import com.zhack.services.MaterialService;
@@ -31,6 +32,7 @@ import com.zhack.util.Utl;
 
 public class GenBlocksTestState extends BaseTestAppState {
 
+	private World world = World.getInstance();
 	private Player player;
 
 	private MaterialService matSvc = MaterialService.getInstance();
@@ -78,10 +80,11 @@ public class GenBlocksTestState extends BaseTestAppState {
 		super.initialize(stateManager, app);
 
 		player = new Player();
-
+		
 		initInputs();
 		UI.drawCrosshair(this.app);
 		cursorBox = new CursorBox(rootNode);
+		cursorBox.enableDebugHUD(this.app.getGuiNode()); // DEBUG
 		testDrawChunk();
 	}
 
@@ -122,17 +125,20 @@ public class GenBlocksTestState extends BaseTestAppState {
 		int y = 0;
 		int z = 0;
 
-		chunk = new Chunk(x, y, z);
-		chunk.generate(World.WORLD_SEED);
+		 chunk = new Chunk(x, y, z);
+		 chunk.generate(World.WORLD_SEED);
 		drawNearChunk(chunk, rootNode);
+//		drawNearChunk(playersChunk, rootNode);
 	}
 
 	@Override
 	public void update(float tpf) {
 		super.update(tpf);
+		world.update();
 
 		// every frame updates
 		cursorBox.update(tpf, cam);
+
 		bindCameraToPlayer();
 
 		// nth updates
@@ -145,7 +151,34 @@ public class GenBlocksTestState extends BaseTestAppState {
 		}
 	});
 
+	private Chunk playersChunk = null;
+	private Sector playerSector = null;
+	private String playerPosDesc;
+
 	protected void doPlayerBlockChangedDetection() {
+		int x = (int) player.getLocalTranslation().x;
+		int y = (int) player.getLocalTranslation().y;
+		int z = (int) player.getLocalTranslation().z;
+//		log().debug("doPlayerBlockChangedDetection %s,%s,%s", x, y, z);
+		Sector sector = world.getSectorAtWorldPos(x, y, z);
+		if ( sector != playerSector ) {
+//			log().debug("doPlayerBlockChangedDetection - sector changed %s,%s,%s", sector.getX(), sector.getY(), sector.getZ());
+			playerSector = sector;
+		}
+		
+		Chunk chunk = world.getChunkAtWorldPos(x, y, z);
+		if (chunk != playersChunk) {
+//			log().debug("doPlayerBlockChangedDetection - chunk changed %s,%s,%s", chunk.getX(), chunk.getY(), chunk.getZ());
+			playersChunk = chunk;
+			drawNearChunk(playersChunk, rootNode);
+		}
+		
+		
+		String tmp = world.describePos(x, y, z);
+		if ( !tmp.equals(playerPosDesc) ) {
+			playerPosDesc = tmp;
+			log().debug(playerPosDesc);
+		}
 	}
 
 	/**
@@ -169,6 +202,10 @@ public class GenBlocksTestState extends BaseTestAppState {
 		// wcx == world-space chunk origin x aka, the world space coordinates for the 0x0x0 point of this chunk
 		// cx == chunk-space x
 		// wx == world-space x
+
+		if (chunk == null) {
+			return;
+		}
 
 		int wcx = chunk.getX(); // - chunk.getChunkWidth() / 2;
 		int wcy = chunk.getY(); // - chunk.getChunkHeight() / 2;

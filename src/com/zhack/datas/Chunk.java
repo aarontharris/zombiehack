@@ -7,9 +7,6 @@ import com.zhack.BaseObject;
 public class Chunk extends BaseObject {
 	public static final int CHUNK_DIAMETER = 10;
 
-	private static final int NUM_DATA = 1;
-	private static final int ID_BLOCKSTATE_TYPE = 0;
-
 	/**
 	 * <pre>
 	 * [x][y][z][i] -- where xyz is the chunk coordinate and i is the data index.
@@ -36,7 +33,10 @@ public class Chunk extends BaseObject {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		chunkState = new short[CHUNK_DIAMETER][CHUNK_DIAMETER][CHUNK_DIAMETER][NUM_DATA];
+		chunkState = new short[CHUNK_DIAMETER][CHUNK_DIAMETER][CHUNK_DIAMETER][BlockState.NUM_DATA];
+	}
+
+	public void update() {
 	}
 
 	public long toChunkSeed(long seed) {
@@ -72,12 +72,11 @@ public class Chunk extends BaseObject {
 	}
 
 	public void setBlockType(int x, int y, int z, BlockType type) {
-		chunkState[x][y][z][ID_BLOCKSTATE_TYPE] = type.getId();
+		BlockState.writeBlockType(chunkState[x][y][z], type);
 	}
 
 	public BlockType getBlockType(int x, int y, int z) {
-		BlockType out = BlockType.getById(chunkState[x][y][z][ID_BLOCKSTATE_TYPE]);
-		return out;
+		return BlockState.readBlockType(chunkState[x][y][z]);
 	}
 
 	public int getChunkWidth() {
@@ -103,7 +102,7 @@ public class Chunk extends BaseObject {
 	public int getZ() {
 		return z;
 	}
-	
+
 	public int getLeftBoundary() {
 		return getX() - CHUNK_DIAMETER;
 	}
@@ -126,5 +125,25 @@ public class Chunk extends BaseObject {
 
 	public int getBottomBoundary() {
 		return getY() - CHUNK_DIAMETER;
+	}
+	
+	public static int toBlockPos( int worldPos, int chunkPos ) {
+		int out = worldPos - chunkPos;
+		if ( out < 0 ) {
+			out = Chunk.CHUNK_DIAMETER - out;
+		}
+		return out;
+	}
+
+	public short[] getBlockDataAtWorldPos(int x, int y, int z) {
+		int bx = toBlockPos( x, this.x );
+		int by = toBlockPos( y, this.y );
+		int bz = toBlockPos( z, this.z );
+//		log().debug("getBlockDataAtWorldPos(%s,%s,%s) -> (%s,%s,%s)", x, y, z, bx, by, bz);
+		return chunkState[bx][by][bz];
+	}
+
+	public BlockType getBlockTypeAtWorldPos(int x, int y, int z) {
+		return BlockState.readBlockType(getBlockDataAtWorldPos(x, y, z));
 	}
 }

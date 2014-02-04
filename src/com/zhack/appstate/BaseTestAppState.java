@@ -9,10 +9,21 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import com.zhack.Logger;
 import com.zhack.ZombieHack;
 import com.zhack.gameobject.Player;
 
 public class BaseTestAppState extends AbstractAppState implements CommonAppState {
+
+	private Logger logger;
+
+	protected Logger log() {
+		if (logger == null) {
+			logger = new Logger(getClass());
+		}
+		return logger;
+	}
+
 	protected ZombieHack app;
 	protected Camera cam;
 	protected Node rootNode;

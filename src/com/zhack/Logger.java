@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Logger {
 	private static final Map<Class<?>, Logger> loggerMap = new HashMap<Class<?>, Logger>();
+	private static ZombieHack app;
 
 	public static final Logger inst(Class<?> clazz) {
 		Logger out = loggerMap.get(clazz);

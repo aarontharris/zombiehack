@@ -22,9 +22,9 @@ public class ZombieHack extends SimpleApplication {
 			AppSettings settings = new AppSettings(true);
 			settings.setTitle("My Tower Defense Demo");
 			settings.setSettingsDialogImage("Interface/splash.png");
-			settings.setFullscreen(true);
-			settings.put("Width", 1440);
-			settings.put("Height", 900);
+			settings.setFullscreen(false);
+			settings.put("Width", 640);
+			settings.put("Height", 480);
 			settings.put("VSync", false); // turn this off for huge framerate boost
 			settings.put("Samples", 4); // anti aliasing 16x
 			// settings.setUseInput( true ); // default=true. false disabled all user input until set to true again

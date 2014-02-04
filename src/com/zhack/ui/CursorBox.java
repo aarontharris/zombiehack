@@ -2,7 +2,10 @@ package com.zhack.ui;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
@@ -11,6 +14,9 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial.CullHint;
 import com.zhack.BaseObject;
+import com.zhack.ZombieHack;
+import com.zhack.datas.BlockState;
+import com.zhack.datas.World;
 import com.zhack.services.MaterialService;
 import com.zhack.services.MaterialService.MaterialType;
 import com.zhack.services.MeshService;
@@ -20,12 +26,17 @@ public class CursorBox extends BaseObject {
 	private static final float POLL_PERIOD = .1f; // 10 polls per second
 	private static final float MAX_DIST = 4f;
 
+	private ZombieHack app = ZombieHack.getInstance();
+	private World world = World.getInstance();
+
 	private Geometry geo;
 	private Node parent;
 
 	private float timeSinceLastPoll;
 	private boolean enabled;
 	private boolean visible;
+
+	private Node guiNode;
 
 	public CursorBox() {
 		this(null);
@@ -84,17 +95,46 @@ public class CursorBox extends BaseObject {
 
 	public void update(float tpf, Camera cam) {
 		if (enabled && timeSinceLastPoll >= POLL_PERIOD) {
-			pollCursorPosition(cam);
+			CollisionResult collision = pollCursorPosition(cam);
+			doGuiUpdate(cam, collision);
 			timeSinceLastPoll = 0;
 		} else {
 			timeSinceLastPoll += tpf;
 		}
 	}
 
+	private boolean guiInit = false;
+	private BitmapText hudText;
+
+	public void doGuiUpdate(Camera cam, CollisionResult collision) {
+		if (guiNode != null) {
+			if (!guiInit) {
+				BitmapFont guiFont = app.getDefaultFont();
+				hudText = new BitmapText(guiFont, false);
+				hudText.setSize(guiFont.getCharSet().getRenderedSize()); // font size
+				hudText.setColor(ColorRGBA.White); // font color
+				guiNode.attachChild(hudText);
+				guiInit = true;
+			}
+			short[] blockData = world.getBlockDataAtWorldPos((int)cam.getLocation().x, (int)cam.getLocation().y, (int)cam.getLocation().z);
+			
+			int width = app.getScreenWidth();
+			int height = app.getScreenHeight();
+			String msg = "POS: " + cam.getLocation() + "\n"
+					+ "ROT: " + cam.getRotation() + "\n"
+					+ "BLOCK: " + BlockState.readBlockType(blockData);
+			hudText.setText(msg); // the text
+
+			int x = width - ((int) hudText.getLineWidth() + 1);
+			int y = height - ((int) hudText.getLineHeight() + 1);
+			hudText.setLocalTranslation(x, y, 0); // position
+		}
+	}
+
 	private Ray camRay = new Ray();
 	private CollisionResults camRayCollisionResults = new CollisionResults();
 
-	private void pollCursorPosition(Camera cam) {
+	private CollisionResult pollCursorPosition(Camera cam) {
 		camRay.setOrigin(cam.getLocation());
 		camRay.setDirection(cam.getDirection());// rather than new Vector3f
 		camRay.setLimit(MAX_DIST);
@@ -117,12 +157,20 @@ public class CursorBox extends BaseObject {
 				geo.setLocalTranslation(target.getLocalTranslation());
 			}
 			setVisible();
+
+			return collision;
 		} else {
 			setInvisible();
 		}
+
+		return null;
 	}
 
 	public Geometry getGeometry() {
 		return geo;
+	}
+
+	public void enableDebugHUD(Node guiNode) {
+		this.guiNode = guiNode;
 	}
 }

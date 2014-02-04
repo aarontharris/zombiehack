@@ -75,18 +75,4 @@ public class Units {
 		return a.distance(b);
 	}
 	
-	public static final float distance( Vector3f a, float x, float y, float z ) {
-		return 0;	
-	}
-	
-	public static final float distance( float x, float y, float z, Vector3f b ) {
-		Vector3f a = Pool.vector3f(x, y, z);
-		float out = distance( a, b );
-		Pool.release(a);
-		return out;
-	}
-	
-	public static final float distance( float ax, float ay, float az, float bx, float by, float bz ) {
-		return 0;
-	}
 }
