@@ -203,9 +203,11 @@ public class GenBlocksTestState extends BaseTestAppState {
 		// cx == chunk-space x
 		// wx == world-space x
 
-		if (chunk == null) {
+		if (chunk == null)
 			return;
-		}
+		
+		if ( chunk.onScreen )
+			return;
 
 		int wcx = chunk.getX(); // - chunk.getChunkWidth() / 2;
 		int wcy = chunk.getY(); // - chunk.getChunkHeight() / 2;
@@ -243,6 +245,8 @@ public class GenBlocksTestState extends BaseTestAppState {
 			chunkNode = (Node) GeometryBatchFactory.optimize(chunkNode);
 			parent.attachChild(chunkNode);
 		}
+		
+		chunk.onScreen = true;
 	}
 
 	@Override

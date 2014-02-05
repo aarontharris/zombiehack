@@ -16,6 +16,7 @@ public class Sector extends BaseObject {
 	private Chunk[][][] chunks;
 
 	public Sector(int x, int y, int z) {
+		chunks = new Chunk[SEC_DIAMETER][SEC_DIAMETER][SEC_DIAMETER];
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -25,14 +26,16 @@ public class Sector extends BaseObject {
 		for (int x = 0; x < SEC_DIAMETER; x++) {
 			for (int y = 0; y < SEC_DIAMETER; y++) {
 				for (int z = 0; z < SEC_DIAMETER; z++) {
-					chunks[x][y][z].update();
+					Chunk chunk = chunks[x][y][z];
+					if (chunk != null) {
+						chunk.update();
+					}
 				}
 			}
 		}
 	}
 
 	public void generate() {
-		chunks = new Chunk[SEC_DIAMETER][SEC_DIAMETER][SEC_DIAMETER];
 		for (int x = 0; x < SEC_DIAMETER; x++) {
 			for (int y = 0; y < SEC_DIAMETER; y++) {
 				for (int z = 0; z < SEC_DIAMETER; z++) {
@@ -76,9 +79,15 @@ public class Sector extends BaseObject {
 		int cy = toChunkPos(y - this.y) / dia;
 		int cz = toChunkPos(z - this.z) / dia;
 
-//		log().debug("getChunkAtWorldPos(%s,%s,%s) -> (%s,%s,%s)", x, y, z, cx, cy, cz);
+		// log().debug("getChunkAtWorldPos(%s,%s,%s) -> (%s,%s,%s)", x, y, z, cx, cy, cz);
 
 		// return chunks[x - this.x][y - this.y][z - this.z];
+
+		if (chunks[cx][cy][cz] == null) {
+			chunks[cx][cy][cz] = new Chunk(toChunkPos(x), toChunkPos(y), toChunkPos(z));
+			chunks[cx][cy][cz].generate(World.WORLD_SEED);
+		}
+
 		return chunks[cx][cy][cz];
 	}
 

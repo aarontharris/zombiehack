@@ -20,6 +20,8 @@ public class Chunk extends BaseObject {
 	private int x;
 	private int y;
 	private int z;
+	
+	public transient boolean onScreen = false;
 
 	/**
 	 * @param x
@@ -54,15 +56,25 @@ public class Chunk extends BaseObject {
 		for (short x = 0; x < CHUNK_DIAMETER; x++) {
 			for (short y = 0; y < CHUNK_DIAMETER; y++) {
 				for (short z = 0; z < CHUNK_DIAMETER; z++) {
-					int r = rand.nextInt(1000);
-					if (r < 1) { // 1 in 1000
+
+					int wx = this.x + x;
+					int wy = this.y + y;
+					int wz = this.z + z;
+
+					if (wy > 0) {
 						setBlockType(x, y, z, BlockType.AIR);
-					} else if (r < 301) {
-						setBlockType(x, y, z, BlockType.STONE);
-					} else if (r < 601) {
-						setBlockType(x, y, z, BlockType.COBBLESTONE);
 					} else {
-						setBlockType(x, y, z, BlockType.DIRT);
+						int r = rand.nextInt(1000);
+
+						if (r < 1) { // 1 in 1000
+							setBlockType(x, y, z, BlockType.AIR);
+						} else if (r < 301) {
+							setBlockType(x, y, z, BlockType.STONE);
+						} else if (r < 601) {
+							setBlockType(x, y, z, BlockType.COBBLESTONE);
+						} else {
+							setBlockType(x, y, z, BlockType.DIRT);
+						}
 					}
 				}
 			}
@@ -126,24 +138,34 @@ public class Chunk extends BaseObject {
 	public int getBottomBoundary() {
 		return getY() - CHUNK_DIAMETER;
 	}
-	
-	public static int toBlockPos( int worldPos, int chunkPos ) {
+
+	public static int toBlockPos(int worldPos, int chunkPos) {
 		int out = worldPos - chunkPos;
-		if ( out < 0 ) {
+		if (out < 0) {
 			out = Chunk.CHUNK_DIAMETER - out;
 		}
 		return out;
 	}
 
 	public short[] getBlockDataAtWorldPos(int x, int y, int z) {
-		int bx = toBlockPos( x, this.x );
-		int by = toBlockPos( y, this.y );
-		int bz = toBlockPos( z, this.z );
-//		log().debug("getBlockDataAtWorldPos(%s,%s,%s) -> (%s,%s,%s)", x, y, z, bx, by, bz);
-		return chunkState[bx][by][bz];
+		int bx = toBlockPos(x, this.x);
+		int by = toBlockPos(y, this.y);
+		int bz = toBlockPos(z, this.z);
+		try {
+			// log().debug("getBlockDataAtWorldPos(%s,%s,%s) - (%s,%s,%s) = (%s,%s,%s)", x, y, z, this.x, this.y, this.z, bx, by, bz);
+			return chunkState[bx][by][bz];
+		} catch (Exception e) {
+			log().debug("getBlockDataAtWorldPos(%s,%s,%s) - (%s,%s,%s) = (%s,%s,%s)", x, y, z, this.x, this.y, this.z, bx, by, bz);
+		}
+		return new short[BlockState.NUM_DATA];
 	}
 
 	public BlockType getBlockTypeAtWorldPos(int x, int y, int z) {
 		return BlockState.readBlockType(getBlockDataAtWorldPos(x, y, z));
+	}
+
+	@Override
+	public String toString() {
+		return "{x: " + x + ", y: " + y + ", z: " + z + "}";
 	}
 }

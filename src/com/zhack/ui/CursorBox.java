@@ -116,13 +116,21 @@ public class CursorBox extends BaseObject {
 				guiNode.attachChild(hudText);
 				guiInit = true;
 			}
-			short[] blockData = world.getBlockDataAtWorldPos((int)cam.getLocation().x, (int)cam.getLocation().y, (int)cam.getLocation().z);
-			
+
+			String msg = "POS: " + cam.getLocation() + "\n"//
+					+ "ROT: " + cam.getRotation();
+
+			if (collision != null) {
+				int targetX = (int) collision.getGeometry().getLocalTranslation().x;
+				int targetY = (int) collision.getGeometry().getLocalTranslation().y;
+				int targetZ = (int) collision.getGeometry().getLocalTranslation().z;
+				short[] blockData = world.getBlockDataAtWorldPos(targetX, targetY, targetZ);
+				msg = msg + "\nBLOCK: " + BlockState.readBlockType(blockData);
+				msg = msg + " @ " + targetX + ", " + targetY + ", " + targetZ;
+			}
+
 			int width = app.getScreenWidth();
 			int height = app.getScreenHeight();
-			String msg = "POS: " + cam.getLocation() + "\n"
-					+ "ROT: " + cam.getRotation() + "\n"
-					+ "BLOCK: " + BlockState.readBlockType(blockData);
 			hudText.setText(msg); // the text
 
 			int x = width - ((int) hudText.getLineWidth() + 1);
