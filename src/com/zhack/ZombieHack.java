@@ -23,8 +23,8 @@ public class ZombieHack extends SimpleApplication {
 			settings.setTitle("My Tower Defense Demo");
 			settings.setSettingsDialogImage("Interface/splash.png");
 			settings.setFullscreen(false);
-			settings.put("Width", 640);
-			settings.put("Height", 480);
+			settings.put("Width", 1280);
+			settings.put("Height", 800);
 			settings.put("VSync", false); // turn this off for huge framerate boost
 			settings.put("Samples", 4); // anti aliasing 16x
 			// settings.setUseInput( true ); // default=true. false disabled all user input until set to true again
@@ -65,7 +65,9 @@ public class ZombieHack extends SimpleApplication {
 		MeshService.getInstance().init();
 		MaterialService.getInstance().init(assetManager);
 
-		initViewport(100f, 100f);
+		initViewport(100f, 100f); // 100 degree FOV, 100u distant clip
+		
+		getFlyByCamera().setMoveSpeed(3.0f);
 
 		// appState = new GamePlayAppState();
 		appState = new GenBlocksTestState();
