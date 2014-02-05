@@ -2,6 +2,7 @@ package com.zhack.datas;
 
 import java.util.Random;
 
+import com.jme3.scene.Node;
 import com.zhack.BaseObject;
 
 public class Chunk extends BaseObject {
@@ -22,6 +23,8 @@ public class Chunk extends BaseObject {
 	private int z;
 	
 	public transient boolean onScreen = false;
+	
+	public transient Node chunkRoot;
 
 	/**
 	 * @param x

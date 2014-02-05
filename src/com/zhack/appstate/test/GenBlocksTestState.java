@@ -224,6 +224,8 @@ public class GenBlocksTestState extends BaseTestAppState {
 		int wcx = chunk.getX(); // - chunk.getChunkWidth() / 2;
 		int wcy = chunk.getY(); // - chunk.getChunkHeight() / 2;
 		int wcz = chunk.getZ(); // - chunk.getChunkDepth() / 2;
+		
+		// FIXME: use transient Chunk.rootNode as root node for chunk, then you can remove the entire set of chunk nodes when out of view
 
 		Node chunkNode = parent;
 		if (optimized) {
