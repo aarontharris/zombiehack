@@ -19,6 +19,7 @@ import com.jme3.scene.Node;
 import com.zhack.appstate.BaseTestAppState;
 import com.zhack.datas.BlockType;
 import com.zhack.datas.Chunk;
+import com.zhack.datas.Facing;
 import com.zhack.datas.Sector;
 import com.zhack.datas.World;
 import com.zhack.gameobject.Player;
@@ -135,19 +136,25 @@ public class GenBlocksTestState extends BaseTestAppState {
 	public void update(float tpf) {
 		super.update(tpf);
 		world.update();
+		player.update( app.getTimer().getTimeInSeconds() );
+		bindCameraToPlayer();
 
 		// every frame updates
 		cursorBox.update(tpf, cam);
 
-		bindCameraToPlayer();
-
 		// nth updates
-		every10nth.update(tpf);
+		every10nth_p010.update(tpf); // phase .1
+		every10nth_p005.update(tpf); // phase .05
 	}
 
-	private DoEvery every10nth = new DoEvery(0.1f, new Runnable() {
+	private DoEvery every10nth_p010 = new DoEvery(0.1f, new Runnable() {
 		public void run() {
 			doPlayerBlockChangedDetection();
+		}
+	});
+	
+	private DoEvery every10nth_p005 = new DoEvery(0.05f, new Runnable() {
+		public void run() {
 		}
 	});
 
@@ -171,6 +178,11 @@ public class GenBlocksTestState extends BaseTestAppState {
 //			log().debug("doPlayerBlockChangedDetection - chunk changed %s,%s,%s", chunk.getX(), chunk.getY(), chunk.getZ());
 			playersChunk = chunk;
 			drawNearChunk(playersChunk, rootNode);
+			
+			for ( Facing facing : Facing.values() ) {
+				Chunk adj = world.getAdjacentChunk(chunk, facing);
+				drawNearChunk( adj, rootNode );
+			}
 		}
 		
 		

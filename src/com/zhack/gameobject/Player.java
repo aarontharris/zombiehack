@@ -1,8 +1,53 @@
 package com.zhack.gameobject;
 
+import com.jme3.math.Ray;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.zhack.datas.Facing;
+import com.zhack.util.TrueEvery;
 
 public class Player extends Geometry {
+
+	private Facing facing;
+	private Vector3f trajectory;
+	private TrueEvery te010;
+	
+	private Vector3f prevLocation;
+	private Vector3f prevprevLocation;
+
+	public Player() {
+		super();
+		
+		prevLocation = new Vector3f();
+		prevLocation.x = getLocalTranslation().x;
+		prevLocation.y = getLocalTranslation().y;
+		prevLocation.z = getLocalTranslation().z;
+		
+		prevprevLocation = new Vector3f();
+		prevprevLocation.x = getLocalTranslation().x;
+		prevprevLocation.y = getLocalTranslation().y;
+		prevprevLocation.z = getLocalTranslation().z;
+		
+		te010 = new TrueEvery(0.1f);
+	}
+
+	public void update(float runTime) {
+		te010.update(runTime);
+		if ( te010.isRipe() ) {
+			updateTrajectory();
+		}
+	}
+	
+	protected void updateTrajectory() {
+		//FIXME trajectory
+		
+		prevprevLocation.x = prevLocation.x;
+		prevprevLocation.y = prevLocation.y;
+		prevprevLocation.z = prevLocation.z;
+		prevLocation.x = getLocalTranslation().x;
+		prevLocation.y = getLocalTranslation().y;
+		prevLocation.z = getLocalTranslation().z;
+	}
 
 	// public static Mesh mesh = new Box( 1, 1, 1 );
 	// static {

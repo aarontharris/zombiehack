@@ -54,25 +54,14 @@ public class World extends BaseObject {
 		return x + "_" + y + "_" + z;
 	}
 
-	/**
-	 * x,y,z is used to indicate the position of the chunk you want where they may only be -1, 0, 1 each.<br>
-	 * 0,0,0 would be origin.<br>
-	 * -1,0,0 would be left.<br>
-	 * 1,0,0 would be right.<br>
-	 * 0,0,-1 would be forward. // yes forward is -1<br>
-	 * 0,0,1 would be backward.<br>
-	 * etc
-	 * 
-	 * @param origin
-	 * @return
-	 */
-	public Chunk getAdjacentChunksOrdered(Chunk origin, int x, int y, int z) {
+	public Chunk getAdjacentChunk(Chunk origin, Facing facing) {
 		int ox = origin.getX();
 		int oy = origin.getY();
 		int oz = origin.getZ();
-		int cx = ox + Chunk.CHUNK_DIAMETER * x;
-		int cy = oy + Chunk.CHUNK_DIAMETER * y;
-		int cz = oz + Chunk.CHUNK_DIAMETER * z;
+		int cx = ox + Chunk.CHUNK_DIAMETER * facing.getX();
+		int cy = oy + Chunk.CHUNK_DIAMETER * facing.getY();
+		int cz = oz + Chunk.CHUNK_DIAMETER * facing.getZ();
+		log().debug("getAdjacentChunk: %s,%s,%s - %s - %s,%s,%s", origin.getX(), origin.getY(), origin.getZ(), facing, cx, cy, cz);
 		return getChunkAtWorldPos(cx, cy, cz);
 	}
 

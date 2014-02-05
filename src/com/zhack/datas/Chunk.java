@@ -80,7 +80,7 @@ public class Chunk extends BaseObject {
 			}
 		}
 
-		setBlockType(0, 0, 0, BlockType.WHITE); // note our 0,0,0 point
+//		setBlockType(0, 0, 0, BlockType.WHITE); // note our 0,0,0 point
 	}
 
 	public void setBlockType(int x, int y, int z, BlockType type) {
